@@ -12,9 +12,11 @@ import java.net.URL;
 public class StartingClass extends Applet implements Runnable, KeyListener {
 
 	private Robot robot;
-	private Image image, character;
+	private Image image, character, background;
 	private URL base;
 	private Graphics second;
+
+	private static Background bg1, bg2;
 
 	@Override
 	public void init() {
@@ -32,11 +34,14 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 
 		// Image Setups
 		character = getImage(base, "data/character.png");
+		background = getImage(base, "data/background.png");
 
 	}
 
 	@Override
 	public void start() {
+		bg1 = new Background(0, 0);
+		bg2 = new Background(2160, 0);
 		robot = new Robot();
 		Thread thread = new Thread(this);
 		thread.start();
@@ -55,6 +60,9 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 	@Override
 	public void run() {
 		while (true) {
+			robot.update();
+			bg1.update();
+			bg2.update();
 			repaint();
 			try {
 				Thread.sleep(17);
@@ -133,12 +141,15 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 		second.setColor(getBackground());
 		second.fillRect(0, 0, getWidth(), getHeight());
 		paint(second);
-
+		second.setColor(getForeground());
+		
 		g.drawImage(image, 0, 0, this);
 	}
 
 	@Override
 	public void paint(Graphics g) {
+		g.drawImage(background, bg1.getBgX(), bg1.getBgY(), this);
+		g.drawImage(background, bg2.getBgX(), bg2.getBgY(), this);
 		g.drawImage(character, robot.getCenterX() - 61,
 				robot.getCenterY() - 63, this);
 
