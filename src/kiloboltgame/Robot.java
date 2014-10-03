@@ -1,6 +1,6 @@
 package kiloboltgame;
 
-import java.awt.Graphics;
+import java.util.ArrayList;
 
 public class Robot {
 
@@ -16,6 +16,8 @@ public class Robot {
 	private boolean movingRight = false;
 	private boolean ducked = false;
 
+	private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
+	
 	private static Background bg1 = StartingClass.getBg1();
 	private static Background bg2 = StartingClass.getBg2();
 
@@ -113,6 +115,11 @@ public class Robot {
         }
 
     }
+    
+ 	public void shoot() {
+		Projectile p = new Projectile(centerX + 50, centerY - 25);
+		projectiles.add(p);
+	}
 
 	public int getCenterX() {
 		return centerX;
@@ -178,5 +185,8 @@ public class Robot {
 		this.ducked = ducked;
 	}
 
+ 	public ArrayList<Projectile> getProjectiles() {
+		return projectiles;
+	}
 
 }
