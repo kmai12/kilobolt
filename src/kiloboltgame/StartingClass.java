@@ -36,8 +36,8 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 		// Image Setups
 		character = getImage(base, "data/character.png");
 		background = getImage(base, "data/background.png");
-		characterDown = getImage(base, "data/down");
-		characterJumped = getImage(base, "data/jumped");
+		characterDown = getImage(base, "data/down.png");
+		characterJumped = getImage(base, "data/jumped.png");
 		currentSprite = character;
 	}
 
@@ -164,13 +164,13 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 	public void update(Graphics g) {
 		if (image == null) {
 			image = createImage(this.getWidth(), this.getHeight());
-			second = getGraphics();
+			second = image.getGraphics();
 		}
 
 		second.setColor(getBackground());
 		second.fillRect(0, 0, getWidth(), getHeight());
-		paint(second);
 		second.setColor(getForeground());
+		paint(second);
 
 		g.drawImage(image, 0, 0, this);
 	}

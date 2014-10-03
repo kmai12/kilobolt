@@ -24,11 +24,11 @@ public class Robot {
 
 	public void update() {
 		// Moves Character or Scrolls Background accordingly.
+	
 		if (speedX < 0) {
 			centerX += speedX;
 		}
 		if (speedX == 0 || speedX < 0) {
-			System.out.println("Do not scroll the background.");
 			bg1.setSpeedX(0);
 			bg2.setSpeedX(0);
 		}
@@ -42,10 +42,9 @@ public class Robot {
 
 		// Updates Y Position
 
-		if (centerY + speedY >= 382) {
-			centerY = 382;
-		} else {
-			centerY += speedY;
+		centerY += speedY;
+		if (centerY + speedY >= GROUND) {
+			centerY = GROUND;
 		}
 
 		// Updates Y Position
@@ -179,16 +178,5 @@ public class Robot {
 		this.ducked = ducked;
 	}
 
-	public int getJUMPSPEED() {
-		return JUMPSPEED;
-	}
-
-	public int getMOVESPEED() {
-		return MOVESPEED;
-	}
-
-	public int getGROUND() {
-		return GROUND;
-	}
 
 }
