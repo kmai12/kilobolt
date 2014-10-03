@@ -3,7 +3,7 @@ package kiloboltgame;
 import java.awt.Graphics;
 
 public class Robot {
-	
+
 	private int centerX = 100;
 	private int centerY = 382;
 	private boolean jumped = false;
@@ -26,14 +26,14 @@ public class Robot {
 				System.out.println("Scroll Background Here");
 			}
 		}
-		
+
 		// Updates Y Position
 
 		if (centerY + speedY >= 382) {
 			centerY = 382;
-		}else{                       
-                     centerY += speedY;
-                }
+		} else {
+			centerY += speedY;
+		}
 
 		// Handles Jumping
 		if (jumped == true) {
@@ -70,6 +70,46 @@ public class Robot {
 			speedY = -15;
 			jumped = true;
 		}
-
 	}
+
+	public int getCenterX() {
+		return centerX;
+	}
+
+	public void setCenterX(int centerX) {
+		this.centerX = centerX;
+	}
+
+	public int getCenterY() {
+		return centerY;
+	}
+
+	public void setCenterY(int centerY) {
+		this.centerY = centerY;
+	}
+
+	public boolean isJumped() {
+		return jumped;
+	}
+
+	public void setJumped(boolean jumped) {
+		this.jumped = jumped;
+	}
+
+	public int getSpeedX() {
+		return speedX;
+	}
+
+	public void setSpeedX(int speedX) {
+		this.speedX = speedX;
+	}
+
+	public int getSpeedY() {
+		return speedY;
+	}
+
+	public void setSpeedY(int speedY) {
+		this.speedY = speedY;
+	}
+
 }
