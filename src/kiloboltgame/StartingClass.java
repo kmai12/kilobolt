@@ -75,7 +75,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 			} else if (robot.isJumped() == false && robot.isDucked() == false) {
 				currentSprite = character;
 			}
-			
+
 			ArrayList projectiles = robot.getProjectiles();
 			for (int i = 0; i < projectiles.size(); i++) {
 				Projectile p = (Projectile) projectiles.get(i);
@@ -85,7 +85,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 					projectiles.remove(i);
 				}
 			}
-			
+
 			bg1.update();
 			bg2.update();
 			hb.update();
@@ -144,6 +144,10 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 			robot.jump();
 			break;
 
+		case KeyEvent.VK_CONTROL:
+			if (robot.isDucked() == false && robot.isJumped() == false)
+				robot.shoot();
+			break;
 		}
 	}
 
@@ -202,13 +206,14 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 		g.drawImage(background, bg2.getBgX(), bg2.getBgY(), this);
 		g.drawImage(currentSprite, robot.getCenterX() - 61,
 				robot.getCenterY() - 63, this);
-		
+
 		ArrayList projectiles = robot.getProjectiles();
 		for (int i = 0; i < projectiles.size(); i++) {
 			Projectile p = (Projectile) projectiles.get(i);
 			g.setColor(Color.YELLOW);
 			g.fillRect(p.getX(), p.getY(), 10, 5);
-		
-	}
 
+		}
+
+	}
 }
