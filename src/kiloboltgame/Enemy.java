@@ -3,11 +3,12 @@ package kiloboltgame;
 public class Enemy {
 	private int maxHealth, currentHealth, power, speedX, centerX, centerY;
 	private Background bg = StartingClass.getBg1();
-	
-	//Behavioral Methods
+
+	// Behavioral Methods
 	public void update() {
-	centerX += speedX;
-	speedX = bg.getSpeedX();
+		centerX += speedX;
+		speedX = bg.getSpeedX() * 5;
+
 	}
 
 	public int getMaxHealth() {
@@ -68,7 +69,8 @@ public class Enemy {
 
 	public void die() {
 	}
+
 	public void attack() {
 	}
-	
+
 }

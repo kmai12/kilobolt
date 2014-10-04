@@ -17,7 +17,7 @@ public class Robot {
 	private boolean ducked = false;
 
 	private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
-	
+
 	private static Background bg1 = StartingClass.getBg1();
 	private static Background bg2 = StartingClass.getBg2();
 
@@ -26,7 +26,7 @@ public class Robot {
 
 	public void update() {
 		// Moves Character or Scrolls Background accordingly.
-	
+
 		if (speedX < 0) {
 			centerX += speedX;
 		}
@@ -38,8 +38,8 @@ public class Robot {
 			centerX += speedX;
 		}
 		if (speedX > 0 && centerX > 200) {
-			bg1.setSpeedX(-MOVESPEED);
-			bg2.setSpeedX(-MOVESPEED);
+			bg1.setSpeedX(-MOVESPEED / 5);
+			bg2.setSpeedX(-MOVESPEED / 5);
 		}
 
 		// Updates Y Position
@@ -93,30 +93,31 @@ public class Robot {
 		setMovingLeft(false);
 		stop();
 	}
-    private void stop() {
-        if (isMovingRight() == false && isMovingLeft() == false) {
-            speedX = 0;
-        }
 
-        if (isMovingRight() == false && isMovingLeft() == true) {
-            moveLeft();
-        }
+	private void stop() {
+		if (isMovingRight() == false && isMovingLeft() == false) {
+			speedX = 0;
+		}
 
-        if (isMovingRight() == true && isMovingLeft() == false) {
-            moveRight();
-        }
+		if (isMovingRight() == false && isMovingLeft() == true) {
+			moveLeft();
+		}
 
-    }
+		if (isMovingRight() == true && isMovingLeft() == false) {
+			moveRight();
+		}
 
-    public void jump() {
-        if (jumped == false) {
-            speedY = JUMPSPEED;
-            jumped = true;
-        }
+	}
 
-    }
-    
- 	public void shoot() {
+	public void jump() {
+		if (jumped == false) {
+			speedY = JUMPSPEED;
+			jumped = true;
+		}
+
+	}
+
+	public void shoot() {
 		Projectile p = new Projectile(centerX + 50, centerY - 25);
 		projectiles.add(p);
 	}
@@ -185,7 +186,7 @@ public class Robot {
 		this.ducked = ducked;
 	}
 
- 	public ArrayList<Projectile> getProjectiles() {
+	public ArrayList<Projectile> getProjectiles() {
 		return projectiles;
 	}
 

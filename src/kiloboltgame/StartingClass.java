@@ -20,11 +20,15 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 			characterJumped, background, heliboy;
 	private Image character2, character3, heliboy2, heliboy3, heliboy4,
 			heliboy5;
+	public static Image tiledirt, tileocean;
+
 	private URL base;
 	private Graphics second;
 
 	private static Background bg1, bg2;
 	private Animation anim, hanim;
+	
+	private ArrayList<Tile> tilearray = new ArrayList<Tile>();
 
 	@Override
 	public void init() {
@@ -55,6 +59,8 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 		heliboy5 = getImage(base, "data/heliboy5.png");
 
 		background = getImage(base, "data/background.png");
+		tileocean = getImage(base, "data/tileocean.png");
+		tiledirt = getImage(base, "data/tiledirt.png");
 
 		anim = new Animation();
 		anim.addFrame(character, 1250);
@@ -80,6 +86,22 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 	public void start() {
 		bg1 = new Background(0, 0);
 		bg2 = new Background(2160, 0);
+		
+		// Initialize Tiles
+		for (int i = 0; i < 200; i++) {
+			for (int j = 0; j < 12; j++) {
+
+				if (j == 11) {
+					Tile t = new Tile(i, j, 2);
+					tilearray.add(t);
+
+				} if (j == 10) {
+					Tile t = new Tile(i, j, 1);
+					tilearray.add(t);
+				}
+			}
+		}
+		
 		robot = new Robot();
 		hb = new Heliboy(340, 360);
 		hb2 = new Heliboy(700, 360);
@@ -117,6 +139,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 				}
 			}
 
+			updateTiles();
 			bg1.update();
 			bg2.update();
 			hb.update();
@@ -242,6 +265,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 	public void paint(Graphics g) {
 		g.drawImage(background, bg1.getBgX(), bg1.getBgY(), this);
 		g.drawImage(background, bg2.getBgX(), bg2.getBgY(), this);
+		paintTiles(g);
 		g.drawImage(currentSprite, robot.getCenterX() - 61,
 				robot.getCenterY() - 63, this);
 		g.drawImage(hanim.getImage(), hb.getCenterX() - 48, hb.getCenterY() - 48, this);
@@ -257,4 +281,20 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 		}
 
 	}
+	
+	private void updateTiles() {
+
+		for (int i = 0; i < tilearray.size(); i++) {
+			Tile t = (Tile) tilearray.get(i);
+			t.update();
+		}
+	}
+	
+	private void paintTiles(Graphics g) {
+		for (int i = 0; i < tilearray.size(); i++) {
+			Tile t = (Tile) tilearray.get(i);
+			g.drawImage(t.getTileImage(), t.getTileX(), t.getTileY(), this);
+		}
+	}
+	
 }
