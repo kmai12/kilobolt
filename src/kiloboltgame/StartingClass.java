@@ -7,6 +7,9 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -20,14 +23,15 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 			characterJumped, background, heliboy;
 	private Image character2, character3, heliboy2, heliboy3, heliboy4,
 			heliboy5;
-	public static Image tiledirt, tileocean;
+	public static Image tilegrassTop, tilegrassBot, tilegrassLeft,
+			tilegrassRight, tiledirt;
 
 	private URL base;
 	private Graphics second;
 
 	private static Background bg1, bg2;
 	private Animation anim, hanim;
-	
+
 	private ArrayList<Tile> tilearray = new ArrayList<Tile>();
 
 	@Override
@@ -59,8 +63,12 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 		heliboy5 = getImage(base, "data/heliboy5.png");
 
 		background = getImage(base, "data/background.png");
-		tileocean = getImage(base, "data/tileocean.png");
+		
 		tiledirt = getImage(base, "data/tiledirt.png");
+		tilegrassTop = getImage(base, "data/tilegrasstop.png");
+		tilegrassBot = getImage(base, "data/tilegrassbot.png");
+		tilegrassLeft = getImage(base, "data/tilegrassleft.png");
+		tilegrassRight = getImage(base, "data/tilegrassright.png");
 
 		anim = new Animation();
 		anim.addFrame(character, 1250);
@@ -86,28 +94,58 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 	public void start() {
 		bg1 = new Background(0, 0);
 		bg2 = new Background(2160, 0);
-		
+
 		// Initialize Tiles
-		for (int i = 0; i < 200; i++) {
-			for (int j = 0; j < 12; j++) {
+        try {
+            loadMap("data/map1.txt");
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
-				if (j == 11) {
-					Tile t = new Tile(i, j, 2);
-					tilearray.add(t);
-
-				} if (j == 10) {
-					Tile t = new Tile(i, j, 1);
-					tilearray.add(t);
-				}
-			}
-		}
-		
 		robot = new Robot();
 		hb = new Heliboy(340, 360);
 		hb2 = new Heliboy(700, 360);
 		Thread thread = new Thread(this);
 		thread.start();
 	}
+
+	 private void loadMap(String filename) throws IOException {
+	        ArrayList lines = new ArrayList();
+	        int width = 0;
+	        int height = 0;
+
+	        BufferedReader reader = new BufferedReader(new FileReader(filename));
+	        while (true) {
+	            String line = reader.readLine();
+	            // no more lines to read
+	            if (line == null) {
+	                reader.close();
+	                break;
+	            }
+
+	            if (!line.startsWith("!")) {
+	                lines.add(line);
+	                width = Math.max(width, line.length());
+
+	            }
+	        }
+	        height = lines.size();
+
+	        for (int j = 0; j < 12; j++) {
+	            String line = (String) lines.get(j);
+	            for (int i = 0; i < width; i++) {
+	                System.out.println(i + "is i ");
+
+	                if (i < line.length()) {
+	                    char ch = line.charAt(i);
+	                    Tile t = new Tile(i, j, Character.getNumericValue(ch));
+	                    tilearray.add(t);
+	                }
+
+	            }
+	        }
+	    }
 
 	@Override
 	public void stop() {
@@ -144,7 +182,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 			bg2.update();
 			hb.update();
 			hb2.update();
-			
+
 			animate();
 			repaint();
 			try {
@@ -156,10 +194,10 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 	}
 
 	public void animate() {
-		   anim.update(10);
-		   hanim.update(50);
-		}
-	
+		anim.update(10);
+		hanim.update(50);
+	}
+
 	public static Background getBg1() {
 		return bg1;
 	}
@@ -268,10 +306,11 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 		paintTiles(g);
 		g.drawImage(currentSprite, robot.getCenterX() - 61,
 				robot.getCenterY() - 63, this);
-		g.drawImage(hanim.getImage(), hb.getCenterX() - 48, hb.getCenterY() - 48, this);
-		g.drawImage(hanim.getImage(), hb2.getCenterX() - 48, hb2.getCenterY() - 48, this);
-		
-		
+		g.drawImage(hanim.getImage(), hb.getCenterX() - 48,
+				hb.getCenterY() - 48, this);
+		g.drawImage(hanim.getImage(), hb2.getCenterX() - 48,
+				hb2.getCenterY() - 48, this);
+
 		ArrayList projectiles = robot.getProjectiles();
 		for (int i = 0; i < projectiles.size(); i++) {
 			Projectile p = (Projectile) projectiles.get(i);
@@ -281,7 +320,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 		}
 
 	}
-	
+
 	private void updateTiles() {
 
 		for (int i = 0; i < tilearray.size(); i++) {
@@ -289,12 +328,12 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 			t.update();
 		}
 	}
-	
+
 	private void paintTiles(Graphics g) {
 		for (int i = 0; i < tilearray.size(); i++) {
 			Tile t = (Tile) tilearray.get(i);
 			g.drawImage(t.getTileImage(), t.getTileX(), t.getTileY(), this);
 		}
 	}
-	
+
 }
